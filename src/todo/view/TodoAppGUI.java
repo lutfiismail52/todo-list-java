@@ -6,15 +6,27 @@ import todo.model.Todo;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * TodoAppGUI adalah VIEW.
+ * Bertugas menampilkan antarmuka dan menerima input user.
+ */
 public class TodoAppGUI extends JFrame {
 
+    // Controller sebagai penghubung ke logika & database
     private TodoController todoList = new TodoController();
+
+    // Model list untuk JList
     private DefaultListModel<Todo> listModel = new DefaultListModel<>();
     private JList<Todo> list = new JList<>(listModel);
+
+    // Input teks untuk menambah todo
     private JTextField input = new JTextField();
 
+    /**
+     * Constructor GUI
+     */
     public TodoAppGUI() {
-        setTitle("To-Do List (SQLite)");
+        setTitle("To-Do List - Kelompok 2");
         setSize(400, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -23,16 +35,21 @@ public class TodoAppGUI extends JFrame {
         loadData();
     }
 
+    /**
+     * Inisialisasi semua komponen UI
+     */
     private void initUI() {
         JButton addBtn = new JButton("Tambah");
         JButton toggleBtn = new JButton("Check / Uncheck");
         JButton delBtn = new JButton("Hapus");
         JButton editBtn = new JButton("Edit");
 
+        // Panel atas (input + tombol tambah)
         JPanel top = new JPanel(new BorderLayout(5, 5));
         top.add(input, BorderLayout.CENTER);
         top.add(addBtn, BorderLayout.EAST);
 
+        // Panel bawah (aksi)
         JPanel bottom = new JPanel(new GridLayout(1, 3, 5, 5));
         bottom.add(toggleBtn);
         bottom.add(editBtn);
@@ -42,12 +59,16 @@ public class TodoAppGUI extends JFrame {
         add(new JScrollPane(list), BorderLayout.CENTER);
         add(bottom, BorderLayout.SOUTH);
 
+        // Event listener tombol
         addBtn.addActionListener(e -> addTodo());
         toggleBtn.addActionListener(e -> toggleTodo());
         delBtn.addActionListener(e -> deleteTodo());
         editBtn.addActionListener(e -> editTodo());
     }
 
+    /**
+     * Memuat ulang data dari database ke JList
+     */
     private void loadData() {
         listModel.clear();
         for (Todo t : todoList.getAll()) {
@@ -55,6 +76,9 @@ public class TodoAppGUI extends JFrame {
         }
     }
 
+    /**
+     * Menambah todo baru
+     */
     private void addTodo() {
         String text = input.getText().trim();
         if (!text.isEmpty()) {
@@ -64,6 +88,9 @@ public class TodoAppGUI extends JFrame {
         }
     }
 
+    /**
+     * Menghapus todo terpilih
+     */
     private void deleteTodo() {
         Todo selected = list.getSelectedValue();
         if (selected != null) {
@@ -72,6 +99,9 @@ public class TodoAppGUI extends JFrame {
         }
     }
 
+    /**
+     * Mengedit judul todo
+     */
     private void editTodo() {
         Todo selected = list.getSelectedValue();
         if (selected != null) {
@@ -87,6 +117,9 @@ public class TodoAppGUI extends JFrame {
         }
     }
 
+    /**
+     * Toggle status selesai / belum selesai
+     */
     private void toggleTodo() {
         Todo selected = list.getSelectedValue();
         if (selected != null) {
@@ -95,6 +128,9 @@ public class TodoAppGUI extends JFrame {
         }
     }
 
+    /**
+     * Main alternatif (opsional)
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new TodoAppGUI().setVisible(true));
     }
