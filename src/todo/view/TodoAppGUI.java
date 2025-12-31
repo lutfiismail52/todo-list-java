@@ -26,7 +26,7 @@ public class TodoAppGUI extends JFrame {
      * Constructor GUI
      */
     public TodoAppGUI() {
-        setTitle("To-Do List - Kelompok 2");
+        setTitle("To-Do List");
         setSize(400, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

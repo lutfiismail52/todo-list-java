@@ -1,12 +1,12 @@
 # =========================
 # Java compiled files
 # =========================
-*.class
+# *.class
 
 # =========================
 # Java package files
 # =========================
-*.jar
+# *.jar
 *.war
 *.ear
 
@@ -29,13 +29,13 @@ Thumbs.db
 # =========================
 # SQLite database
 # =========================
-*.db
+# *.db
 *.db-journal
 
 # =========================
 # Build / output folders
 # =========================
-bin/
+# bin/
 out/
 target/
 
