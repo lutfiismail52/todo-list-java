@@ -1,10 +1,10 @@
 package todo.view;
 
-import todo.model.TodoItem;
+import todo.model.Todo; // Gunakan Todo
 import javax.swing.*;
 import java.awt.*;
 
-public class TodoRenderer extends JCheckBox implements ListCellRenderer<TodoItem> {
+public class TodoRenderer extends JCheckBox implements ListCellRenderer<Todo> {
 
     public TodoRenderer() {
         setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -13,14 +13,15 @@ public class TodoRenderer extends JCheckBox implements ListCellRenderer<TodoItem
 
     @Override
     public Component getListCellRendererComponent(
-            JList<? extends TodoItem> list,
-            TodoItem value,
+            JList<? extends Todo> list,
+            Todo value,
             int index,
             boolean isSelected,
             boolean cellHasFocus) {
 
-        setText(value.getText());
-        setSelected(value.isDone());
+        // Menggunakan method dari class Todo
+        setText(value.getTitle()); 
+        setSelected(value.isCompleted());
 
         if (isSelected) {
             setBackground(new Color(252, 228, 236));
