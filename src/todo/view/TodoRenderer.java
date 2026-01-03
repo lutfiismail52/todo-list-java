@@ -1,14 +1,10 @@
 package todo.view;
 
-import todo.model.Todo;
+import todo.model.Todo; // Gunakan Todo
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Custom renderer agar JList menampilkan checkbox
- */
-public class TodoRenderer extends JCheckBox
-        implements ListCellRenderer<Todo> {
+public class TodoRenderer extends JCheckBox implements ListCellRenderer<Todo> {
 
     public TodoRenderer() {
         setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -23,7 +19,8 @@ public class TodoRenderer extends JCheckBox
             boolean isSelected,
             boolean cellHasFocus) {
 
-        setText(value.getTitle());
+        // Menggunakan method dari class Todo
+        setText(value.getTitle()); 
         setSelected(value.isCompleted());
 
         if (isSelected) {
