@@ -1,63 +1,59 @@
 package todo.controller;
 
-import todo.dao.TodoDAO;
-import todo.model.Todo;
-import java.util.List;
+import todo.view.TodoView;
+import todo.model.TodoItem;
 
-/**
- * TodoController berfungsi sebagai CONTROLLER dalam pola MVC.
- * 
- * Tugas utama:
- * - Menerima permintaan dari View (GUI)
- * - Meneruskan logika ke DAO (database)
- * - Tidak mengandung kode UI atau SQL langsung
- */
+import javax.swing.*;
+
 public class TodoController {
 
-    // DAO digunakan untuk berinteraksi langsung dengan database
-    private TodoDAO dao = new TodoDAO();
+    private TodoView view;
 
-    /**
-     * Menambahkan todo baru ke database
-     */
-    public void add(String title) {
-        dao.addTodo(title);
+    public TodoController(TodoView view) {
+        this.view = view;
+
+        view.btnTambah.addActionListener(e -> tambah());
+        view.btnHapus.addActionListener(e -> hapus());
+        view.btnEdit.addActionListener(e -> edit());
+
+        // ⬇️ INI YANG BIKIN CHECKBOX BISA DIKLIK
+        view.listTodo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int index = view.listTodo.locationToIndex(e.getPoint());
+                if (index != -1) {
+                    TodoItem item = view.listModel.get(index);
+                    item.setDone(!item.isDone());
+                    view.listTodo.repaint();
+                }
+            }
+        });
     }
 
-    /**
-     * Mengambil semua data todo dari database
-     */
-    public List<Todo> getAll() {
-        return dao.getAllTodos();
+    private void tambah() {
+        String text = view.txtTodo.getText().trim();
+        if (text.isEmpty()) return;
+
+        view.listModel.addElement(new TodoItem(text));
+        view.txtTodo.setText("");
     }
 
-    /**
-     * Menandai todo sebagai selesai (completed = true)
-     */
-    public void complete(int id) {
-        dao.markCompleted(id);
+    private void hapus() {
+        int index = view.listTodo.getSelectedIndex();
+        if (index != -1) {
+            view.listModel.remove(index);
+        }
     }
 
-    /**
-     * Mengubah judul todo
-     */
-    public void edit(int id, String title) {
-        dao.updateTitle(id, title);
-    }
+    private void edit() {
+        int index = view.listTodo.getSelectedIndex();
+        if (index == -1) return;
 
-    /**
-     * Menghapus todo berdasarkan id
-     */
-    public void delete(int id) {
-        dao.deleteTodo(id);
-    }
+        TodoItem item = view.listModel.get(index);
+        String baru = JOptionPane.showInputDialog(view, "Edit Todo:", item.getText());
 
-    /**
-     * Toggle status todo:
-     * - Jika selesai → menjadi belum selesai
-     * - Jika belum selesai → menjadi selesai
-     */
-    public void toggle(int id, boolean currentStatus) {
-        dao.toggleCompleted(id, currentStatus);
+        if (baru != null && !baru.trim().isEmpty()) {
+            item = new TodoItem(baru);
+            view.listModel.set(index, item);
+        }
     }
 }
